@@ -69,6 +69,7 @@
                 // }
                 promise.then((noUser) => {
                     noUser
+                    
                     $login.html("Login / Change User")
                 }).catch((noUser) => {
                     console.log("error: this is in the error " + noUser)
@@ -168,6 +169,10 @@
     };
 
     $post.click(function () {
+        if (userLoggedIn == "") {
+            alert("You must be Logged in to post.")
+            return
+        }
         $.ajax({
             type: "PATCH",
             url: `${firebaseUrlTwitte}${totalPosts}${jsonExt}`,
