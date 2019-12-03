@@ -1,0 +1,77 @@
+nav {
+    display: flex;
+    width: 50%;
+    margin: auto 20% auto auto;
+}
+
+#icon {
+    background-color: #CCCCFF;
+    height: 100%;
+    padding: 8px;
+    border: 4px solid #ff0028;
+    border-radius: 45%;
+}
+
+.nav { 
+    margin: auto 10px auto 10px;
+    padding: 7px;
+    border: 3px solid #CCCCFF;
+}
+
+.flexbox {
+    display: flex;
+}
+
+#loginBtn {
+    overflow: hidden;
+    float: right;
+}
+
+#postMsgBox {
+    float: left;
+}
+
+#top {
+    width: 50%;
+    margin: auto auto auto 30%;
+}
+
+article {
+    border: 5px solid #333;
+    max-width: 600px;
+    width: 50%;
+    height: 100%;
+    margin: auto auto 2% 30%;
+}
+
+/* #insertedText {
+} */
+.dropdown {
+    border: 4px solid #CCCCFF;
+    position: relative;
+    margin: auto 30px auto auto;
+    display: none;
+}
+
+.dropdown p {
+    margin: auto;
+    padding: 3px 5px 2px 5px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #CCCCFF;
+    min-width: 80px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+}
+
+.dropdown:focus {
+    background-color: #CCCCFF;
+}
+
+.dropdown:hover .dropdown-content{
+    display: block;
+}
