@@ -42,31 +42,14 @@
                             userLoggedIn = data[i].userName;
                             callFirebase();
                         }
-                        console.log(user)
 
                     }
                     if (userLoggedIn === "") {
                         resolve(
                             alert("That User Does Not Exist!"),
-                            console.log("this is inside the statement " + data[i].firstName + " " + data[i].lastName)
-                            // console.log("this is inside second if statement " + data[i].firstName + " " + data[i].lastName)
                         )
                     }
-                    // else {
-                    //     reject(
-
-                    //     )
-                    // }
                 });
-                // var resolve = () => {
-
-                // }
-                // if (data[i].firstName + " " + data[i].lastName) {
-                //     console.log("this is inside second if statement " + data[i].firstName + " " + data[i].lastName)
-                // } else {
-                //     alert("That User Does Not Exist!");
-                //     console.log("this is inside the ELSE statement " + data[i].firstName + " " + data[i].lastName)
-                // }
                 promise.then((noUser) => {
                     noUser
                     
@@ -76,10 +59,6 @@
                     $login.html("Login / Change User")
                 })
             }
-
-            // error: function (error) {
-            //     console.log("There was an error. Read " + error)
-            // }
         });
     }
     login();
@@ -94,9 +73,7 @@
                     if (data[i] == null) {
                         continue
                     } else {
-                        console.log(data[i] + " inside")
                         hideTarget = data[i].id
-                        console.log(hideTarget + " this is the ID")
                         $msgBin.prepend(
                             `<article id="${data[i].user}" class="${data[i].id}">
                     <div class="flexbox">
@@ -104,7 +81,7 @@
                             ${data[i].user}
                         </h2>
                         <div id="timestamp">
-                            ${Date.now()}
+                            ${data[i].time}
                         </div>
                         <options id="${data[i].id}" data-hideValue="${data[i].user}" class="dropdown">
                             <p>...</p>
@@ -127,16 +104,17 @@
                         }
 
                         let $thisArticleId = $("article").attr("id");
-                        console.log($thisArticleId + " this is the Article ID aka User")
                         let dataUser = data[i].user
                         let $deleteText = $("#deleteBtn")
-
+                        let $editText = $("#editBtn")
                         $deleteText.click(function () {
                             let $deleteKey = $(this).parent().parent().attr("id");
-                            console.log($deleteKey + " this should be the delete key aka Post #")
-                            x($deleteKey, $thisArticleId);
+                            deleteMsg($deleteKey, $thisArticleId);
                         });
-
+                        $editText.click(function () {
+                            let $editKey = $(this).parent().parent().attr("id");
+                            editMsg($editKey, $thisArticleId);
+                        });
                     };
                 }
             },
@@ -145,18 +123,14 @@
             }
 
         });
-        console.log("callFirebase() ran")
     }
 
-    var x = ($deleteKey, $thisArticleId) => {
-        console.log($deleteKey)
+    var deleteMsg = ($deleteKey, $thisArticleId) => {
         $.ajax({
             url: `${firebaseUrlTwitte}${$deleteKey}${jsonExt}`,
             type: "DELETE",
             success: function (data) {
                 if ($thisArticleId == userLoggedIn) {
-                    console.log(`${firebaseUrlTwitte}${$deleteKey}${jsonExt}`)
-                    console.log($deleteKey + ' data was deleted');
                     $msgBin.empty();
                     callFirebase();
                 }
@@ -164,11 +138,33 @@
             error: (error) => {
                 console.log(error);
             },
-            // }
         });
     };
 
+    var editMsg = ($editKey, $thisArticleId) => {
+        let textToEdit = $("#insertedText").html()
+        let textToInsert = prompt("Please enter what you would like the edited twitte to read!", textToEdit)
+        $.ajax({
+            type: "PATCH",
+            url: `${firebaseUrlTwitte}${$editKey}${jsonExt}`,
+            data: JSON.stringify({
+                "text": textToInsert
+            }),
+            success: function (data) {
+                if ($thisArticleId == userLoggedIn) {
+                    $msgBin.empty();
+                    callFirebase();
+                }
+            },
+            error: (error) => {
+                console.log(error);
+            },
+        });
+    }
+
     $post.click(function () {
+        let date = new Date();
+
         if (userLoggedIn == "") {
             alert("You must be Logged in to post.")
             return
@@ -180,7 +176,7 @@
             data: JSON.stringify({
                 "id": totalPosts,
                 "text": $postText.val(),
-                "time": Date.now(),
+                "time": date,
                 "user": userLoggedIn
             }),
             success: (data) => {
