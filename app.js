@@ -18,6 +18,8 @@
     let firebaseUrlUser = "https://twitte-5e9b0.firebaseio.com/users/"
     let firebaseUrlTwitte = "https://twitte-5e9b0.firebaseio.com/posts/"
     let jsonExt = ".json"
+
+
     let userLoggedIn = ""
     let totalPosts = " "
     let hideTarget = " "
@@ -31,23 +33,52 @@
             url: `${firebaseUrlUser}${jsonExt}`,
             success: function (data) {
                 var user = prompt("Log in using your first and last name", "Smudge Cat");
+                userLoggedIn = "";
                 $msgBin.empty();
-                for (let i = 0; i < 3; i++) {
-                    if (user === data[i].firstName + " " + data[i].lastName) {
-                        $login.html(data[i].userName)
-                        userLoggedIn = data[i].userName;
-                        callFirebase();
-                    } else if (data[i].firstName + " " + data[i].lastName) {
-                        
-                    } else if (userLoggedIn = "") {
-                        alert("That User Does Not Exist!")
+                let promise = new Promise((resolve, reject) => {
+                    for (let i = 0; i < 3; i++) {
+                        if (user === data[i].firstName + " " + data[i].lastName) {
+                            $login.html(data[i].userName)
+                            userLoggedIn = data[i].userName;
+                            callFirebase();
+                        }
+                        console.log(user)
+
                     }
-                    console.log(userLoggedIn)
-                }
-            },
-            error: function (error) {
-                console.log("There was an error. Read " + error)
+                    if (userLoggedIn === "") {
+                        resolve(
+                            alert("That User Does Not Exist!"),
+                            console.log("this is inside the statement " + data[i].firstName + " " + data[i].lastName)
+                            // console.log("this is inside second if statement " + data[i].firstName + " " + data[i].lastName)
+                        )
+                    }
+                    // else {
+                    //     reject(
+
+                    //     )
+                    // }
+                });
+                // var resolve = () => {
+
+                // }
+                // if (data[i].firstName + " " + data[i].lastName) {
+                //     console.log("this is inside second if statement " + data[i].firstName + " " + data[i].lastName)
+                // } else {
+                //     alert("That User Does Not Exist!");
+                //     console.log("this is inside the ELSE statement " + data[i].firstName + " " + data[i].lastName)
+                // }
+                promise.then((noUser) => {
+                    noUser
+                    $login.html("Login / Change User")
+                }).catch((noUser) => {
+                    console.log("error: this is in the error " + noUser)
+                    $login.html("Login / Change User")
+                })
             }
+
+            // error: function (error) {
+            //     console.log("There was an error. Read " + error)
+            // }
         });
     }
     login();
@@ -93,12 +124,12 @@
                         if (data[i].user == userLoggedIn) {
                             $(`#${hideTarget}`).show();
                         }
-                        
+
                         let $thisArticleId = $("article").attr("id");
                         console.log($thisArticleId + " this is the Article ID aka User")
                         let dataUser = data[i].user
                         let $deleteText = $("#deleteBtn")
-                        
+
                         $deleteText.click(function () {
                             let $deleteKey = $(this).parent().parent().attr("id");
                             console.log($deleteKey + " this should be the delete key aka Post #")
@@ -106,7 +137,7 @@
                         });
 
                     };
-                 }
+                }
             },
             error: function (error) {
                 console.log("There was an error. Read " + error)
@@ -121,7 +152,7 @@
         $.ajax({
             url: `${firebaseUrlTwitte}${$deleteKey}${jsonExt}`,
             type: "DELETE",
-            success: function(data) {
+            success: function (data) {
                 if ($thisArticleId == userLoggedIn) {
                     console.log(`${firebaseUrlTwitte}${$deleteKey}${jsonExt}`)
                     console.log($deleteKey + ' data was deleted');
@@ -132,9 +163,9 @@
             error: (error) => {
                 console.log(error);
             },
-        // }
-    });
-};
+            // }
+        });
+    };
 
     $post.click(function () {
         $.ajax({
@@ -142,11 +173,11 @@
             url: `${firebaseUrlTwitte}${totalPosts}${jsonExt}`,
             datatype: "/posts/",
             data: JSON.stringify({
-                    "id": totalPosts,
-                    "text": $postText.val(),
-                    "time": Date.now(),
-                    "user": userLoggedIn
-                }),
+                "id": totalPosts,
+                "text": $postText.val(),
+                "time": Date.now(),
+                "user": userLoggedIn
+            }),
             success: (data) => {
                 console.log(data + " success, new data added");
                 totalPosts++
