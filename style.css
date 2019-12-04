@@ -4,7 +4,23 @@ nav {
     margin: auto 20% auto auto;
 }
 
+#postMsgBox {
+    background-color: lightblue;
+    border-radius: 8px;
+    padding: 8px;
+    float: left;
+    width: 21%;
+    margin: auto 2% auto 1%;
+    position: sticky;
+    top: 10%
+}
 
+#postText {
+    height: 200px;
+    max-width: 97%;
+    min-width: 97%;
+    min-height: 70%
+}
 
 #icon {
     background-color: #CCCCFF;

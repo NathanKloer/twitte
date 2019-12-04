@@ -52,7 +52,7 @@
                 });
                 promise.then((noUser) => {
                     noUser
-                    
+
                     $login.html("Login / Change User")
                 }).catch((noUser) => {
                     console.log("error: this is in the error " + noUser)
@@ -75,7 +75,7 @@
                     } else {
                         hideTarget = data[i].id
                         $msgBin.prepend(
-                            `<article id="${data[i].user}" class="${data[i].id}">
+                `<article id="${data[i].user}" class="${data[i].id}">
                     <div class="flexbox">
                         <h2 class="postedBy">
                             ${data[i].user}
